@@ -1,5 +1,5 @@
 name: Reusable Workflow To Deploy MuleSoft Application
-
+ 
 on:
   workflow_call:
     inputs:
@@ -17,17 +17,17 @@ on:
         type: string
         required: false
         default: '17'
-
+ 
 permissions:
   contents: read
-
+ 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4
-
+ 
       - name: Checkout common-pipeline (for maven/settings.xml)
         uses: actions/checkout@v4
         with:
@@ -35,36 +35,37 @@ jobs:
           ref: ${{ inputs.common-ref }}
           path: common
           token: ${{ secrets.COMMON_REPO_TOKEN || github.token }}
-
+ 
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: zulu
           java-version: ${{ inputs.java-version }}
           cache: maven
-
-      - name: Build with Maven
+ 
+      - name: Build and publish to Exchange
         run: >
-          mvn --batch-mode clean package
+          mvn --batch-mode clean deploy
           --settings common/maven/settings.xml
           -DskipMunitTests
+          -Dbusiness.group.id="${{ vars.BUSINESS_GROUP_ID }}"
         env:
           CA_CLIENT_ID: ${{ secrets.CA_CLIENT_ID }}
           CA_CLIENT_SECRET: ${{ secrets.CA_CLIENT_SECRET }}
-
+ 
       - name: Stamp artifact file name with commit hash
         run: |
           artifactName1=$(ls target/*.jar | head -1)
           commitHash=$(git rev-parse --short "$GITHUB_SHA")
           artifactName2=$(echo "$artifactName1" | sed "s/\.jar$/-$commitHash.jar/")
           mv "$artifactName1" "$artifactName2"
-
+ 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: artifacts
           path: target/*.jar
-
+ 
   deploy:
     name: Deploy to ${{ inputs.environment }}
     needs: build
@@ -73,7 +74,7 @@ jobs:
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4
-
+ 
       - name: Checkout common-pipeline (for maven/settings.xml)
         uses: actions/checkout@v4
         with:
@@ -81,19 +82,19 @@ jobs:
           ref: ${{ inputs.common-ref }}
           path: common
           token: ${{ secrets.COMMON_REPO_TOKEN || github.token }}
-
+ 
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: zulu
           java-version: ${{ inputs.java-version }}
           cache: maven
-
+ 
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: artifacts
-
+ 
       - name: Deploy to ${{ inputs.environment }}
         env:
           CA_CLIENT_ID: ${{ secrets.CA_CLIENT_ID }}
