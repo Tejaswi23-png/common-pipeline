@@ -70,7 +70,7 @@ jobs:
     name: Deploy to ${{ vars.ANYPOINT_ENVIRONMENT  || inputs.environment }}
     needs: build
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment: ${{ vars.ANYPOINT_ENVIRONMENT }}
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4
