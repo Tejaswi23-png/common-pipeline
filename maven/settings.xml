@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<settings>
+	<servers>
+		<!-- Exchange login: the Connected App (client id ~?~ client secret), read from env vars set in the workflow -->
+		<server>
+			<id>anypoint-exchange-v3</id>
+			<username>~~~Client~~~</username>
+			<password>${env.CA_CLIENT_ID}~?~${env.CA_CLIENT_SECRET}</password>
+		</server>
+	</servers>
+
+	<pluginGroups>
+		<pluginGroup>org.mule.tools</pluginGroup>
+	</pluginGroups>
+
+	<profiles>
+		<profile>
+			<id>mule-extra-repos</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<repositories>
+				<repository>
+					<id>mule-public</id>
+					<url>https://repository.mulesoft.org/nexus/content/repositories/public</url>
+				</repository>
+				<repository>
+					<id>anypoint-exchange-v3</id>
+					<name>Anypoint Exchange</name>
+					<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+					<layout>default</layout>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>mule-public</id>
+					<url>https://repository.mulesoft.org/nexus/content/repositories/public</url>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	</profiles>
+</settings>
