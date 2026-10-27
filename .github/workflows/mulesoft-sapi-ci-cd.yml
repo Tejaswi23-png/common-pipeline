@@ -112,4 +112,5 @@ jobs:
            -Dplatform.client.id="${{ secrets.ENV_CLIENT_ID }}" \
            -Dplatform.client.secret="${{ secrets.ENV_CLIENT_SECRET }}" \
            -Dmule.key="${{ secrets.ENCRYPTION_KEY }}" \
-           -Denv="${{ secrets.MULE_ENV }}"
+           -Denv="${{ secrets.MULE_ENV }}" \
+           -Dapplication.name="${{ secrets.APP_NAME }}"
