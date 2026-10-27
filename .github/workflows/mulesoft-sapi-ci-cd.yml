@@ -96,7 +96,7 @@ jobs:
         with:
           name: artifacts
  
-      - name: Deploy to ${{ vars.ANYPOINT_ENVIRONMENT  || inputs.environment }}
+      - name: Deploy to ${{ vars.ANYPOINT_ENVIRONMENT }}
         env:
           CA_CLIENT_ID: ${{ secrets.CA_CLIENT_ID }}
           CA_CLIENT_SECRET: ${{ secrets.CA_CLIENT_SECRET }}
