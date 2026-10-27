@@ -9,7 +9,7 @@ on:
         required: false
         default: dev
       common-ref:
-        description: Branch or tag of common-pipe-line to take maven/settings.xml from
+        description: Branch or tag of common-pipeline to take maven/settings.xml from
         type: string
         required: false
         default: main
@@ -28,10 +28,10 @@ jobs:
       - name: Checkout this repo
         uses: actions/checkout@v4
 
-      - name: Checkout common-pipe-line (for maven/settings.xml)
+      - name: Checkout common-pipeline (for maven/settings.xml)
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.repository_owner }}/common-pipe-line
+          repository: ${{ github.repository_owner }}/common-pipeline
           ref: ${{ inputs.common-ref }}
           path: common
           token: ${{ secrets.COMMON_REPO_TOKEN || github.token }}
@@ -74,10 +74,10 @@ jobs:
       - name: Checkout this repo
         uses: actions/checkout@v4
 
-      - name: Checkout common-pipe-line (for maven/settings.xml)
+      - name: Checkout common-pipeline (for maven/settings.xml)
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.repository_owner }}/common-pipe-line
+          repository: ${{ github.repository_owner }}/common-pipeline
           ref: ${{ inputs.common-ref }}
           path: common
           token: ${{ secrets.COMMON_REPO_TOKEN || github.token }}
